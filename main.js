@@ -11,7 +11,7 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer({canvas});
 	// size
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
 	// document.body.appendChild( renderer.domElement );
 
 	camera = new THREE.OrthographicCamera(canvas.width/-2, canvas.width/2, canvas.height/-2, canvas.height/2, 1, 1000)
@@ -44,6 +44,9 @@ function init() {
 	scene.add(right);
 	scene.add(left);
 
+	// const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.5);
+	// scene.add(directionalLight);
+
 	// click event(화면 전환)
 	const rayCaster = new THREE.Raycaster();
 	let pointer = new THREE.Vector2();
@@ -59,8 +62,14 @@ function init() {
 			if (point.object == right) cube.rotation.y += 1;
 		})
 	})
+	
+	// window.addEventListener("keydown", (e) => {
+	// 	if (e.key === "ArrowLeft") cube.rotation.x += 1;
+	// 	else if(e.key === "ArrowRigth") cube.rotation.y -= 1;
+	// 	else if (e.key == "ArrouUp") cube.rotation.y += 1;
+	// 	else if (e.key == "ArrowDown") cube.rotation.y  -= 1;
+	// })
 }
-
 
 function animate() {
 	requestAnimationFrame( animate );
@@ -73,3 +82,12 @@ function animate() {
 
 init();
 animate();
+
+//반응형 처리 : window사이즈에 맞게 반응형 조절하기
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+}
+//사이즈가 바뀔 때마다 함수 실행
+window.addEventListener('resize', onWindowResize)
